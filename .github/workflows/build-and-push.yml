@@ -20,7 +20,7 @@ jobs:
 
       - name: 🔧 Build container image
         run: |
-          podman build -t $FULL_IMAGE .
+          docker build -t $FULL_IMAGE .
 
       - name: 🔍 Scan image with Trivy
         uses: aquasecurity/trivy-action@master
@@ -32,9 +32,9 @@ jobs:
 
       - name: 🔑 Login to Quay.io
         run: |
-          podman login quay.io -u "${{ secrets.QUAY_USER }}" -p "${{ secrets.QUAY_PASSWORD }}"
+          docker login quay.io -u "${{ secrets.QUAY_USER }}" -p "${{ secrets.QUAY_PASSWORD }}"
 
       - name: 🚀 Push image to Quay.io
         run: |
-          podman push $FULL_IMAGE
+          docker push $FULL_IMAGE
 
