@@ -1,7 +1,7 @@
 # Containerfile
 FROM registry.access.redhat.com/ubi9/ubi:latest
 
-LABEL maintainer="tu@redhat.com"
+LABEL maintainer="user@redhat.com"
 LABEL description="Exemple d’imatge per provar pipeline amb Quay"
 
 RUN dnf install -y python3 && \
