@@ -7,8 +7,8 @@ on:
 
 env:
   IMAGE_NAME: quay.io/rh_ee_jfont/shiftleft
-  IMAGE_TAG: latest
-  FULL_IMAGE: quay.io/rh_ee_jfont/shiftleft
+  IMAGE_TAG: v1
+  FULL_IMAGE: quay.io/rh_ee_jfont/shiftleft:v1
 
 jobs:
   build-scan-push:
