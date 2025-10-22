@@ -1,0 +1,40 @@
+name: Build and Push to Quay
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: quay.io/rh_ee_jfont/shiftleft
+  IMAGE_TAG: latest
+  FULL_IMAGE: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+jobs:
+  build-scan-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧩 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Build container image
+        run: |
+          podman build -t $FULL_IMAGE .
+
+      - name: 🔍 Scan image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.FULL_IMAGE }}
+          severity: HIGH,CRITICAL
+          exit-code: 1
+          ignore-unfixed: true
+
+      - name: 🔑 Login to Quay.io
+        run: |
+          podman login quay.io -u "${{ secrets.QUAY_USER }}" -p "${{ secrets.QUAY_PASSWORD }}"
+
+      - name: 🚀 Push image to Quay.io
+        run: |
+          podman push $FULL_IMAGE
+
